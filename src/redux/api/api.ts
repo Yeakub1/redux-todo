@@ -9,23 +9,38 @@ export const baseApi = createApi({
       query: (priority) => {
         const params = new URLSearchParams();
         if (priority) {
-          params.append('priority', priority)
+          params.append("priority", priority);
         }
         return {
           url: `/tasks`,
           method: "GET",
-          params: params
+          params: params,
         };
       },
       providesTags: ["todo"],
     }),
     addTodos: builder.mutation({
       query: (data) => {
-        return { url: "/tasks", method: "POST", body: data };
+        return {
+          url: "/tasks",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["todo"],
+    }),
+    updateTodos: builder.mutation({
+      query: (options) => {
+        console.log("inside baseApi", options);
+        return {
+          url: `/tasks/${options.id}`,
+          method: "PUT",
+          body: options.data,
+        };
       },
       invalidatesTags: ["todo"],
     }),
   }),
 });
 
-export const { useGetTodosQuery, useAddTodosMutation } = baseApi;
+export const { useGetTodosQuery, useAddTodosMutation, useUpdateTodosMutation } = baseApi;
