@@ -11,13 +11,15 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useAppDispatch } from "@/redux/hooks";
-import { addTodo } from "@/redux/features/todoSlice";
 import { useAddTodosMutation } from "@/redux/api/api";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("");
+
+
   // ! for local state management
   // const dispatch = useAppDispatch()
 
@@ -32,9 +34,12 @@ const AddTodoModal = () => {
 
     const taskDetails = {
       title: task,
-      description: description,
+      description,
+      isCompleted: false,
       priority,
     };
+
+    console.log('inside modal', taskDetails)
     // ! for local state management
     // dispatch(addTodo(taskDetails));
 
@@ -78,6 +83,24 @@ const AddTodoModal = () => {
                   id="description"
                   className="col-span-3"
                 />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="priority" className="text-right">
+                  priority
+                </Label>
+                <Select onValueChange={(value)=> setPriority(value)}>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select a priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Priority</SelectLabel>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">low</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div className="flex justify-end">
