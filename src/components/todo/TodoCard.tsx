@@ -7,32 +7,50 @@ type TTodoCard = {
   title: string;
   description: string;
   isCompleted?: boolean;
+  priority: string;
 };
 
-const TodoCard = ({ id, title, description, isCompleted }: TTodoCard) => {
+const TodoCard = ({
+  id,
+  title,
+  description,
+  isCompleted,
+  priority,
+}: TTodoCard) => {
   const dispatch = useAppDispatch();
 
   const toggleState = () => {
-    dispatch(toggleComplete(id))
-  }
+    dispatch(toggleComplete(id));
+  };
   return (
     <div className="bg-white rounded-xl flex justify-between items-center p-3 shadow-xl border">
       <input
         onChange={toggleState}
-        className="cursor-pointer"
+        className="cursor-pointer mr-3"
         type="checkbox"
         name="compelete"
         id="compelete"
       />
-      <p className="font-semibold">{title}</p>
-      <p>
+      <p className="font-semibold flex-1">{title}</p>
+      <div className="flex-1 flex items-center gap-2">
+        <div
+          className={`
+        size-3 rounded-full bg-red-500
+        ${priority === "high" ? "bg-red-600" : null}
+        ${priority === "medium" ? "bg-yellow-600" : null}
+        ${priority === "low" ? "bg-green-600" : null}
+        `}
+        ></div>
+        <p className="">{priority}</p>
+      </div>
+      <div className="flex-1">
         {isCompleted ? (
           <p className="text-green-500">Done</p>
         ) : (
           <p className="text-red-500">Pending</p>
         )}
-      </p>
-      <p>{description}</p>
+      </div>
+      <p className="flex-[2]">{description}</p>
       <div className="space-x-5">
         <Button onClick={() => dispatch(removeTodo(id))} className="bg-red-500">
           <svg
